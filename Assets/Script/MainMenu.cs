@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public GameObject mainMenu;
     public GameObject optionsMenu;
     public Animator transition;
+    public Camera camera;
 
 
     // Start is called before the first frame update
@@ -27,7 +28,13 @@ public class MainMenu : MonoBehaviour
 
     public void Jouer()
     {
-        transition.SetTrigger("Start");
+        
+    }
+    IEnumerator Anim()
+    {
+        transition.SetTrigger("Jouer");
+        yield return new WaitForSeconds(2);
+        transition.SetTrigger("Porte");
     }
     public void Options()
     {

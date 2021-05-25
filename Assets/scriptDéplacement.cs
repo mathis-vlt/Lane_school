@@ -5,8 +5,7 @@ using UnityEngine;
 public class scriptDéplacement : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField]
-    private int vitesse;
+    //public int vitesse;
     void Start()
     {
         
