@@ -1157,7 +1157,7 @@ GameObject:
   - component: {fileID: 715759863}
   - component: {fileID: 715759862}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: ordiDroit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2711,6 +2711,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
+  xRotationMaxEtMin: 50
+  yRotationMaxEtMin: 20
 --- !u!114 &1792963191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2874,7 +2876,7 @@ GameObject:
   - component: {fileID: 1860062034}
   - component: {fileID: 1860062033}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: ordiTriche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3286,7 +3288,7 @@ GameObject:
   - component: {fileID: 2022746802}
   - component: {fileID: 2022746801}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: ordiGauche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
