@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject optionsMenu;
+    public Animator transition;
 
 
     // Start is called before the first frame update
@@ -26,7 +27,7 @@ public class MainMenu : MonoBehaviour
 
     public void Jouer()
     {
-        
+        transition.SetTrigger("Start");
     }
     public void Options()
     {
