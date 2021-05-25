@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Thomas.unity
-    guid: ca49dd9a6a771b74eb0f79b963b01631
-  - enabled: 1
     path: Assets/Maxime.unity
     guid: 3f513ab8e9ebc0c47a4abcd4360a4a16
   m_configObjects: {}
