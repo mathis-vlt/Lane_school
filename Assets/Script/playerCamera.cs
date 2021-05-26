@@ -132,8 +132,8 @@ public class playerCamera : MonoBehaviour
             barreConcentrationChargee = false;
 
         //Mattre un if pour vérifier sur le raycast pointe pas déja usr un ordi pendant le chargement de la concentration
-        Debug.Log(barreConcentrationChargee);
-        Debug.Log(concentration);
+        //Debug.Log(barreConcentrationChargee);
+        //Debug.Log(concentration);
 
         if (estVisee && finChargement == false  && barreConcentrationChargee)
         {
@@ -142,7 +142,7 @@ public class playerCamera : MonoBehaviour
             {
                 Chargement = Chargement + Time.deltaTime * speed;
                 concentration = concentration - Time.deltaTime * speed;
-                scriptConcentration.instance.UseConcentration(1 * Time.deltaTime * speed);
+                scriptConcentration.instance.UseConcentration(Time.deltaTime * speed);
                 //Debug.Log(Chargement);
                 if (Chargement >= 100)
                 {

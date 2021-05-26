@@ -52,6 +52,7 @@ public class scriptConcentration : MonoBehaviour
                 StopCoroutine(regen);
 
             regen = StartCoroutine(RegenConcentration());
+            Debug.Log(actuelConcentration);
         }
         else
         {
