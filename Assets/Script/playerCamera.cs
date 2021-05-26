@@ -26,6 +26,8 @@ public class playerCamera : MonoBehaviour
 
     bool barreConcentrationChargee;
 
+    private List<int> ordisUtilises = new List<int>();
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -81,9 +83,9 @@ public class playerCamera : MonoBehaviour
             if(hit.transform.name == "ordiTriche")
             {
                 
-                estVisee = true;
-                chargementTriche();
-                
+                estVisee = true;                
+                chargementTriche(0);
+
             }
         }else
         {
@@ -101,10 +103,9 @@ public class playerCamera : MonoBehaviour
         {
             estVisee = true;
             if (hit.transform.name == "ordiGauche")
-            {
-               
+            {               
                 estVisee = true;
-                chargementTriche();
+                chargementTriche(1);
 
             }
 
@@ -112,7 +113,7 @@ public class playerCamera : MonoBehaviour
             {
                 
                 estVisee = true;
-                chargementTriche();
+                chargementTriche(2);
             }
         }
         else
@@ -124,8 +125,11 @@ public class playerCamera : MonoBehaviour
     }
 
 
-    void chargementTriche()
+
+    void chargementTriche(int indexOrdi)
     {
+
+        verificationOrdiDispo();
         if (concentration >= 99)
             barreConcentrationChargee = true;
         else if (concentration <= 0)
@@ -142,6 +146,10 @@ public class playerCamera : MonoBehaviour
             {
                 Chargement = Chargement + Time.deltaTime * speed;
                 concentration = concentration - Time.deltaTime * speed;
+                
+                if (Chargement > 99)
+                    Chargement = 100;
+
                 scriptConcentration.instance.UseConcentration(Time.deltaTime * speed);
                 //Debug.Log(Chargement);
                 if (Chargement >= 100)
@@ -149,6 +157,8 @@ public class playerCamera : MonoBehaviour
                     resetBarreTriche();
                     finChargement = true;
                     pointsEleve = pointsEleve + 1;
+                    ordisUtilises.Add(indexOrdi);
+                    
                 }
             }
         }
@@ -159,6 +169,14 @@ public class playerCamera : MonoBehaviour
         Chargement = 0;
         barreTriche.SetActive(false);
         Debug.Log(pointsEleve);
+    }
+
+    void verificationOrdiDispo()
+    {   
+        if(ordisUtilises.Contains(0))
+        {
+            Debug.Log("ordi arrière deja utilisé");
+        }
     }
 
 }

@@ -18,6 +18,7 @@ public class scriptConcentration : MonoBehaviour
     public static scriptConcentration instance;
 
 
+    public GameObject erreurConcentration;
 
     public void Awake()
     {
@@ -35,6 +36,7 @@ public class scriptConcentration : MonoBehaviour
         barreConcentration.maxValue = maxConcentration;
         barreConcentration.minValue = minConcentration;
         barreConcentration.value = maxConcentration;
+        erreurConcentration.SetActive(false);
     }
 
 
@@ -43,19 +45,25 @@ public class scriptConcentration : MonoBehaviour
 
     public void UseConcentration(float total)
     {
+
         if(actuelConcentration - total >= 0)
         {
+            
             actuelConcentration -= total;
             barreConcentration.value = actuelConcentration;
+
+            if (actuelConcentration > 100)
+                actuelConcentration = 100f;
 
             if (regen != null)
                 StopCoroutine(regen);
 
             regen = StartCoroutine(RegenConcentration());
-            Debug.Log(actuelConcentration);
+            //Debug.Log(actuelConcentration);
         }
         else
         {
+            erreurConcentration.SetActive(true);
             Debug.Log("pas assez de concentration");
         }
     }
@@ -63,8 +71,8 @@ public class scriptConcentration : MonoBehaviour
     private IEnumerator RegenConcentration()
     {
         yield return new WaitForSeconds(3);
-
-        while(actuelConcentration < maxConcentration)   
+        erreurConcentration.SetActive(false);
+        while (actuelConcentration < maxConcentration)   
         {            
             actuelConcentration += maxConcentration / 100;
             joueur.concentration ++;
