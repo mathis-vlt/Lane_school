@@ -7,16 +7,26 @@ public class playerCamera : MonoBehaviour
     public float mouseSensitivity = 100.0f;
     float xRotation = 0.0f;
     float yRotation = 0.0f;
-    public float xRotationMaxEtMin = 50f;
-    public float yRotationMaxEtMin = 20f;
+    float xRotationMaxEtMin = 55f;
+    float yRotationMaxEtMin = 20f;
     float smooth = 3.0f;
     float range = 100f;
+
+    public int pointsEleve = 0;
+
+    public float Chargement = 0f;
+    bool finChargement;
+    bool estVisee;
+
+
+    public GameObject barreTriche;
+    private float speed = 0.2f;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
-
+        barreTriche.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,7 +56,12 @@ public class playerCamera : MonoBehaviour
             tricheCote();
         }
 
-
+        if (!estVisee)
+        {
+            Chargement = 0;
+            barreTriche.Equals(0);
+        }
+            
         
     }
 
@@ -56,11 +71,20 @@ public class playerCamera : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
+            estVisee = true;
             if(hit.transform.name == "ordiTriche")
             {
-                Debug.Log("Lancer triche arrière");
+                
+                estVisee = true;
+                chargementTriche();
+                
             }
-        }        
+        }else
+        {
+            resetBarre();
+            estVisee = false;
+            finChargement = false;
+        }
     }
 
 
@@ -69,15 +93,55 @@ public class playerCamera : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
+            estVisee = true;
             if (hit.transform.name == "ordiGauche")
             {
-                Debug.Log("Lancer triche gauche");
+               
+                estVisee = true;
+                chargementTriche();
+
             }
 
             if (hit.transform.name == "ordiDroit")
             {
-                Debug.Log("Lancer triche droit");
+                
+                estVisee = true;
+                chargementTriche();
             }
         }
+        else
+        {
+            resetBarre();
+            estVisee = false;
+            finChargement = false;
+        }
+    }
+
+
+    void chargementTriche()
+    {
+        
+        if(estVisee && finChargement == false)
+        {
+            barreTriche.SetActive(true);
+            for (int i = 0; i <= 100; i++)
+            {
+                Chargement = Chargement + Time.deltaTime *speed;
+                //Debug.Log(Chargement);
+                if (Chargement >= 100)
+                {
+                    resetBarre();
+                    finChargement = true;
+                    pointsEleve = pointsEleve + 1;
+                }
+            }
+        }
+    }
+
+    void resetBarre()
+    {
+        Chargement = 0;
+        barreTriche.SetActive(false);
+        Debug.Log(pointsEleve);
     }
 }
