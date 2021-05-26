@@ -22,11 +22,17 @@ public class playerCamera : MonoBehaviour
     public GameObject barreTriche;
     private float speed = 0.2f;
 
+    public float concentration = 100f;
+
+    bool barreConcentrationChargee;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
         barreTriche.SetActive(false);
+
+
     }
 
     // Update is called once per frame
@@ -81,7 +87,7 @@ public class playerCamera : MonoBehaviour
             }
         }else
         {
-            resetBarre();
+            resetBarreTriche();
             estVisee = false;
             finChargement = false;
         }
@@ -111,7 +117,7 @@ public class playerCamera : MonoBehaviour
         }
         else
         {
-            resetBarre();
+            resetBarreTriche();
             estVisee = false;
             finChargement = false;
         }
@@ -120,17 +126,27 @@ public class playerCamera : MonoBehaviour
 
     void chargementTriche()
     {
-        
-        if(estVisee && finChargement == false)
+        if (concentration >= 99)
+            barreConcentrationChargee = true;
+        else if (concentration <= 0)
+            barreConcentrationChargee = false;
+
+        //Mattre un if pour vérifier sur le raycast pointe pas déja usr un ordi pendant le chargement de la concentration
+        Debug.Log(barreConcentrationChargee);
+        Debug.Log(concentration);
+
+        if (estVisee && finChargement == false  && barreConcentrationChargee)
         {
             barreTriche.SetActive(true);
             for (int i = 0; i <= 100; i++)
             {
-                Chargement = Chargement + Time.deltaTime *speed;
+                Chargement = Chargement + Time.deltaTime * speed;
+                concentration = concentration - Time.deltaTime * speed;
+                scriptConcentration.instance.UseConcentration(1 * Time.deltaTime * speed);
                 //Debug.Log(Chargement);
                 if (Chargement >= 100)
                 {
-                    resetBarre();
+                    resetBarreTriche();
                     finChargement = true;
                     pointsEleve = pointsEleve + 1;
                 }
@@ -138,10 +154,11 @@ public class playerCamera : MonoBehaviour
         }
     }
 
-    void resetBarre()
+    void resetBarreTriche()
     {
         Chargement = 0;
         barreTriche.SetActive(false);
         Debug.Log(pointsEleve);
     }
+
 }
