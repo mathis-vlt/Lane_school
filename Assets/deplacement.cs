@@ -4,8 +4,7 @@ using UnityEngine.AI;
 public class deplacement : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] [Range(0.0F, 100.0F)] private float vitesse;
-    [SerializeField] private int Vdep;
+    //[SerializeField] [Range(0.0F, 100.0F)] private float vitesse;
     [SerializeField] private Camera camera;
     [SerializeField] private NavMeshAgent prof;
 
