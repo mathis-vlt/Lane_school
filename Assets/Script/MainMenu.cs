@@ -46,30 +46,33 @@ public class MainMenu : MonoBehaviour
     {
         mainMenu.SetActive(!mainMenu.activeSelf);
         clipJouer.Play();
-        StartCoroutine(Wait3Seconds());
+        StartCoroutine(WaitJouer());
     }
-    IEnumerator Wait3Seconds()
+    IEnumerator WaitJouer()
     {
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Maxime");
-    }
-    IEnumerator Wait2Seconds()
-    {
-        yield return new WaitForSeconds(2);
-        
     }
     public void Options()
     {
         mainMenu.SetActive(!mainMenu.activeSelf);
         clipOptions.Play();
-        StartCoroutine(Wait2Seconds());
+        StartCoroutine(WaitOptions());
+    }
+    IEnumerator WaitOptions()
+    {
+        yield return new WaitForSeconds(2);
         optionsMenu.SetActive(!optionsMenu.activeSelf);
     }
     public void Retour()
     {
         optionsMenu.SetActive(!optionsMenu.activeSelf);
         clipRetour.Play();
-        StartCoroutine(Wait2Seconds());
+        StartCoroutine(WaitRetour());
+    }
+    IEnumerator WaitRetour()
+    {
+        yield return new WaitForSeconds((float)1.7);
         mainMenu.SetActive(!mainMenu.activeSelf);
     }
     public void Quitter()
