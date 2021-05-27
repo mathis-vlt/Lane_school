@@ -36,34 +36,21 @@ public class deplacement : MonoBehaviour
             }
         }*/
 
+        //Debug.Log("" + prof.transform.position);
         if (prof.transform.position == paths[lePath].transform.position)
         {
+
+            //Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
+            //animator.SetTrigger("SurPlace");
+            //StartCoroutine(Wait());
             lePath = Random.Range(0, size);
-            Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
-            animator.SetTrigger("SurPlace");
-            StartCoroutine(Wait());
+            prof.SetDestination(paths[lePath].transform.position);
         }
         else
         {
-            animator.SetTrigger("Marche");
-            Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
+            //animator.SetTrigger("Marche");
+            //Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
             prof.SetDestination(paths[lePath].transform.position);
-        }
-        
-        
-    }
-
-    IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(10);
-        animator.SetTrigger("SurPlace");
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Path")
-        {
-            Debug.Log("Toucher");
         }
     }
 }
