@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerCamera : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class playerCamera : MonoBehaviour
 
     public float valStress = 0f;
 
+    //public RawImage calque;
+    //float couleurCalqueBase = 1;
+
+    Vector2 size = new Vector2(10, 10);
 
 
     /*
@@ -100,7 +105,7 @@ public class playerCamera : MonoBehaviour
 
     void tricheArriere()
     {
-        Debug.Log("face non visée");
+        //Debug.Log("face non visée");
         ordiFaceVisee = false;
         chargementStress();
 
@@ -138,7 +143,7 @@ public class playerCamera : MonoBehaviour
             }
             else
             {
-                Debug.Log("face non visée");
+                //Debug.Log("face non visée");
                 ordiFaceVisee = false;
                 chargementStress();
             }
@@ -219,15 +224,15 @@ public class playerCamera : MonoBehaviour
         
         if (ordisUtilises.Contains(0))
         {
-            Debug.Log("ordi arrière deja utilisé");
+            //Debug.Log("ordi arrière deja utilisé");
         }
         if(ordisUtilises.Contains(1))
         {
-            Debug.Log("ordi gauche deja utilisé");
+            //Debug.Log("ordi gauche deja utilisé");
         }
         if (ordisUtilises.Contains(2))
         {
-            Debug.Log("ordi droit deja utilisé");
+            //Debug.Log("ordi droit deja utilisé");
         }
 
         if (ordisUtilises.Contains(indexOrdi))
@@ -253,16 +258,18 @@ public class playerCamera : MonoBehaviour
 
     }
 
-    void chargementStress()
-    {
+        void chargementStress()
+        {
         for (int i = 0; i <= 100; i++)
             {
                 valStress = valStress + Time.deltaTime * speed;
 
                 if (valStress > 99)
                     valStress = 100;
-
-                scriptStress.instance.UseStress(Time.deltaTime * speed);
+            
+            
+            //calque.rectTransform.sizeDelta = new Vector2(calque.rectTransform.sizeDelta.x - Time.deltaTime * (valStress/100 /3), calque.rectTransform.sizeDelta.y - Time.deltaTime * (valStress /100 / 2));
+            scriptStress.instance.UseStress(Time.deltaTime * speed);
             //Debug.Log("val stress = " + valStress);
             }
         

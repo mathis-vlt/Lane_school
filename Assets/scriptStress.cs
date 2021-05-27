@@ -17,6 +17,15 @@ public class scriptStress : MonoBehaviour
 
     public static scriptStress instance;
 
+    public RawImage calque;
+
+    float speed = 0.1f;
+
+    float opacite = 0f;
+
+
+    
+
     public void Awake()
     {
         instance = this;
@@ -29,7 +38,18 @@ public class scriptStress : MonoBehaviour
         actuelStress = minStress;
         sliderStress.maxValue = maxStress;
         sliderStress.minValue = minStress;
-        sliderStress.value = maxStress;
+        sliderStress.value = minStress;
+        opacite = 0;
+    }
+
+    public void Update()
+    {
+        opacite = sliderStress.value / 100;
+        if (opacite > 1)
+            opacite = 1f;
+
+        calque.color = new Color(255, 255, 255, opacite);
+
     }
 
 
@@ -38,9 +58,14 @@ public class scriptStress : MonoBehaviour
     {
         if (!joueur.ordiFaceVisee)
         {
-            
+                        
             actuelStress += total;
             sliderStress.value = actuelStress;
+
+           
+           
+
+            
 
             if (actuelStress > 100)
                 actuelStress = 100f;
@@ -62,30 +87,32 @@ public class scriptStress : MonoBehaviour
                 }
             }
 
-                if (!joueur.ordiFaceVisee)
+            if (!joueur.ordiFaceVisee)
             {
                 regenStress = StartCoroutine(RegenStress());
             }
             
-
-                
-                
         }
+
+        
     }
 
     private IEnumerator RegenStress()
     {
         yield return new WaitForSeconds(0);
-        Debug.Log("entrée fonction");
+        //Debug.Log("entrée fonction");
         while (actuelStress > minStress)
         {
             actuelStress -= maxStress / 100;
             joueur.valStress--;
             sliderStress.value = actuelStress;
+            opacite = sliderStress.value / 100;
             yield return regenTicks;
-            Debug.Log(joueur.valStress);
+            //Debug.Log(joueur.valStress);
+            
         }
         regenStress = null;
-
+        
     }
+
 }
