@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuPause : MonoBehaviour
 {
     public static bool jeuEnPause = false;
     public GameObject menuPauseUI;
 
-
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -24,6 +26,7 @@ public class MenuPause : MonoBehaviour
             }
         }
     }
+ 
     public void Reprendre()
     {
         menuPauseUI.SetActive(false);

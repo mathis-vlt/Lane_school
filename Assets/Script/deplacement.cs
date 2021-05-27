@@ -10,6 +10,7 @@ public class deplacement : MonoBehaviour
     //[SerializeField] [Range(0.0F, 100.0F)] private float vitesse;
     [SerializeField] private Camera camera;
     [SerializeField] private NavMeshAgent prof;
+    public Animator animator;
     int lePath;
     int size;
 
@@ -38,13 +39,23 @@ public class deplacement : MonoBehaviour
         if (prof.transform.position == paths[lePath].transform.position)
         {
             lePath = Random.Range(0, size);
-            Debug.Log("" + paths[lePath].transform.position);
+            Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
+            animator.SetTrigger("SurPlace");
+            StartCoroutine(Wait());
         }
         else
         {
+            animator.SetTrigger("Marche");
+            Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
             prof.SetDestination(paths[lePath].transform.position);
         }
         
         
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(10);
+        animator.SetTrigger("SurPlace");
     }
 }
