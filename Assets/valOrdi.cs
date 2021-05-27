@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class valNote : MonoBehaviour
+public class valOrdi : MonoBehaviour
 {
-    public Text texte;
+    TMP_Text texteOrdi;
     public playerCamera joueur;
-
+    
     void Start()
     {
-        texte = GetComponent<Text>();
+        texteOrdi = GetComponent<TMP_Text>();
         joueur = FindObjectOfType<playerCamera>();
     }
 
     
     void Update()
     {
-        string textNote = "Note : " + joueur.pointsEleve + "/10";
-        texte.text = textNote;
+        string textNote = "L'ordinateur " + joueur.texteErreur + " a déjè été utilisé";
+        texteOrdi.text = textNote;
     }
 
 }

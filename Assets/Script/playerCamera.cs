@@ -28,12 +28,36 @@ public class playerCamera : MonoBehaviour
 
     private List<int> ordisUtilises = new List<int>();
 
+    private bool usedPc;
+
+    public string texteErreur;
+
+    public GameObject erreurOrdiUsed;
+
+    public bool ordiFaceVisee;
+
+    public float valStress = 0f;
+
+
+
+    /*
+     Barre de stress :
+        Dès que l'on ne regarde pas l'ordinateur de base, la barre de stresse commence a augmenter,
+        elle diminue si on regarde notre pc.
+
+        Plus la barre de stress augmente, plus le champs de vision est réduit.
+
+        Quand la barre de stress est au maximum, la barre tremble.
+      */
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
         barreTriche.SetActive(false);
+        erreurOrdiUsed.SetActive(false);
 
+        usedPc = false;
 
     }
 
@@ -76,6 +100,10 @@ public class playerCamera : MonoBehaviour
 
     void tricheArriere()
     {
+        Debug.Log("face non visée");
+        ordiFaceVisee = false;
+        chargementStress();
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
@@ -92,8 +120,10 @@ public class playerCamera : MonoBehaviour
             resetBarreTriche();
             estVisee = false;
             finChargement = false;
+
         }
     }
+
 
 
     void tricheCote()
@@ -102,6 +132,17 @@ public class playerCamera : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
             estVisee = true;
+            if (hit.transform.name == "ordiFace")
+            {
+                ordiFaceVisee = true;
+            }
+            else
+            {
+                Debug.Log("face non visée");
+                ordiFaceVisee = false;
+                chargementStress();
+            }
+
             if (hit.transform.name == "ordiGauche")
             {               
                 estVisee = true;
@@ -115,12 +156,14 @@ public class playerCamera : MonoBehaviour
                 estVisee = true;
                 chargementTriche(2);
             }
+
         }
         else
         {
             resetBarreTriche();
             estVisee = false;
             finChargement = false;
+            erreurOrdiUsed.SetActive(false);
         }
     }
 
@@ -128,8 +171,7 @@ public class playerCamera : MonoBehaviour
 
     void chargementTriche(int indexOrdi)
     {
-
-        verificationOrdiDispo();
+        verificationOrdiDispo(indexOrdi);
         if (concentration >= 99)
             barreConcentrationChargee = true;
         else if (concentration <= 0)
@@ -139,7 +181,7 @@ public class playerCamera : MonoBehaviour
         //Debug.Log(barreConcentrationChargee);
         //Debug.Log(concentration);
 
-        if (estVisee && finChargement == false  && barreConcentrationChargee)
+        if (estVisee && finChargement == false && barreConcentrationChargee && usedPc == false)
         {
             barreTriche.SetActive(true);
             for (int i = 0; i <= 100; i++)
@@ -168,15 +210,61 @@ public class playerCamera : MonoBehaviour
     {
         Chargement = 0;
         barreTriche.SetActive(false);
-        Debug.Log(pointsEleve);
+        //Debug.Log(pointsEleve);
     }
 
-    void verificationOrdiDispo()
-    {   
-        if(ordisUtilises.Contains(0))
+    void verificationOrdiDispo(int indexOrdi)
+    {
+
+        
+        if (ordisUtilises.Contains(0))
         {
             Debug.Log("ordi arrière deja utilisé");
         }
+        if(ordisUtilises.Contains(1))
+        {
+            Debug.Log("ordi gauche deja utilisé");
+        }
+        if (ordisUtilises.Contains(2))
+        {
+            Debug.Log("ordi droit deja utilisé");
+        }
+
+        if (ordisUtilises.Contains(indexOrdi))
+        {
+            usedPc = true;
+            texteErreur = " ";
+            if (indexOrdi == 0)
+                texteErreur = "arrière";
+            else if (indexOrdi == 1)
+                texteErreur = "gauche";
+            else if (indexOrdi == 2)
+                texteErreur = "droit";
+
+            erreurOrdiUsed.SetActive(true);
+            
+        }
+        else
+        {
+            usedPc = false;
+            erreurOrdiUsed.SetActive(false);
+        }
+            
+
     }
 
+    void chargementStress()
+    {
+        for (int i = 0; i <= 100; i++)
+            {
+                valStress = valStress + Time.deltaTime * speed;
+
+                if (valStress > 99)
+                    valStress = 100;
+
+                scriptStress.instance.UseStress(Time.deltaTime * speed);
+            //Debug.Log("val stress = " + valStress);
+            }
+        
+    }
 }
