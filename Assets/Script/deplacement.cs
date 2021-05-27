@@ -58,4 +58,12 @@ public class deplacement : MonoBehaviour
         yield return new WaitForSeconds(10);
         animator.SetTrigger("SurPlace");
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Path")
+        {
+            Debug.Log("Toucher");
+        }
+    }
 }
