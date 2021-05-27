@@ -10,7 +10,8 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject optionsMenu;
-    public GameObject[] button;
+    public GameObject[] GoButton;
+    public GameObject[] textBases;
 
     public UIButton bases;
     
@@ -29,8 +30,15 @@ public class MainMenu : MonoBehaviour
     {
         mainMenu.SetActive(true);
         optionsMenu.SetActive(false);
-        button[1].SetActive(false);
-        button[0].SetActive(true);
+
+        GoButton[0].SetActive(true);
+        GoButton[1].SetActive(false);
+        GoButton[2].SetActive(false);
+        GoButton[3].SetActive(false);
+
+        textBases[0].SetActive(false);
+        textBases[1].SetActive(false);
+
         if (!PlayerPrefs.HasKey("SoundOptions"))
         {
             PlayerPrefs.SetFloat("SoundOptions", 1f);
@@ -51,15 +59,18 @@ public class MainMenu : MonoBehaviour
         {
             mainMenu.SetActive(!mainMenu.activeSelf);
             bases.click = false;
-            button[0].SetActive(!button[0].activeSelf);
+            GoButton[0].SetActive(!GoButton[0].activeSelf);
             clipBoard.Play();
             StartCoroutine(WaitBoard());
         }
+        
     }
     IEnumerator WaitBoard()
     {
         yield return new WaitForSeconds(2);
-        button[1].SetActive(!button[1].activeSelf);
+        GoButton[1].SetActive(!GoButton[1].activeSelf);
+        GoButton[2].SetActive(!GoButton[2].activeSelf);
+        textBases[0].SetActive(!textBases[0].activeSelf);
     }
 
     public void Jouer()
@@ -97,7 +108,9 @@ public class MainMenu : MonoBehaviour
     }
     public void Board()
     {
-        button[1].SetActive(!button[1].activeSelf);
+        GoButton[1].SetActive(!GoButton[1].activeSelf);
+        GoButton[2].SetActive(!GoButton[2].activeSelf);
+        textBases[0].SetActive(!textBases[0].activeSelf);
         clipBoardRet.Play();
         StartCoroutine(WaitBoardRet());
     }
@@ -105,11 +118,29 @@ public class MainMenu : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         mainMenu.SetActive(!mainMenu.activeSelf);
-        button[0].SetActive(!button[0].activeSelf);
+        GoButton[0].SetActive(!GoButton[0].activeSelf);
     }
     public void Quitter()
     {
         Debug.Log("Bonjour");
         Application.Quit();
+    }
+    public void Suite()
+    {
+        GoButton[1].SetActive(!GoButton[1].activeSelf);
+        GoButton[2].SetActive(!GoButton[2].activeSelf);
+        GoButton[3].SetActive(!GoButton[3].activeSelf);
+
+        textBases[0].SetActive(!textBases[0].activeSelf);
+        textBases[1].SetActive(!textBases[1].activeSelf);
+    }
+    public void BasesRetour()
+    {
+        GoButton[1].SetActive(!GoButton[1].activeSelf);
+        GoButton[2].SetActive(!GoButton[2].activeSelf);
+        GoButton[3].SetActive(!GoButton[3].activeSelf);
+
+        textBases[0].SetActive(!textBases[0].activeSelf);
+        textBases[1].SetActive(!textBases[1].activeSelf);
     }
 }
