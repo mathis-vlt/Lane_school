@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Thomas.unity
     guid: b2302c37ef3ce3d46abe6665be004019
+  - enabled: 1
+    path: Assets/Scenes/Solo.unity
+    guid: 94ac5597224c9674286cb771c563c60a
   m_configObjects: {}
