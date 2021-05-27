@@ -7,6 +7,7 @@ public class deplacement : MonoBehaviour
     //[SerializeField] [Range(0.0F, 100.0F)] private float vitesse;
     [SerializeField] private Camera camera;
     [SerializeField] private NavMeshAgent prof;
+    //coucou
 
     // Update is called once per frame
     void Update()
