@@ -45,15 +45,9 @@ public class playerCamera : MonoBehaviour
     Vector2 size = new Vector2(10, 10);
 
 
-    /*
-     Barre de stress :
-        Dès que l'on ne regarde pas l'ordinateur de base, la barre de stresse commence a augmenter,
-        elle diminue si on regarde notre pc.
+    //jeu ordi
 
-        Plus la barre de stress augmente, plus le champs de vision est réduit.
-
-        Quand la barre de stress est au maximum, la barre tremble.
-      */
+    bool tricheOrdi;
 
     void Start()
     {
@@ -63,6 +57,8 @@ public class playerCamera : MonoBehaviour
         erreurOrdiUsed.SetActive(false);
 
         usedPc = false;
+
+        tricheOrdi = false;
 
     }
 
@@ -88,8 +84,12 @@ public class playerCamera : MonoBehaviour
             yRotation -= mouseY;
             yRotation = Mathf.Clamp(yRotation, -yRotationMaxEtMin, yRotationMaxEtMin);
 
-            Quaternion cibleBase = Quaternion.Euler(yRotation, -xRotation - 90, 0f);
-            transform.localRotation = Quaternion.Slerp(transform.rotation, cibleBase, Time.deltaTime * smooth);
+            if(!tricheOrdi)
+            {
+                Quaternion cibleBase = Quaternion.Euler(yRotation, -xRotation - 90, 0f);
+                transform.localRotation = Quaternion.Slerp(transform.rotation, cibleBase, Time.deltaTime * smooth);
+            }
+            
             tricheCote();
         }
 
@@ -140,6 +140,9 @@ public class playerCamera : MonoBehaviour
             if (hit.transform.name == "ordiFace")
             {
                 ordiFaceVisee = true;
+
+                if (Input.GetKeyDown(KeyCode.E))
+                    lanceLeJeu();
             }
             else
             {
@@ -258,9 +261,9 @@ public class playerCamera : MonoBehaviour
 
     }
 
-        void chargementStress()
-        {
-        for (int i = 0; i <= 100; i++)
+    void chargementStress()
+    {
+    for (int i = 0; i <= 100; i++)
             {
                 valStress = valStress + Time.deltaTime * speed;
 
@@ -274,4 +277,18 @@ public class playerCamera : MonoBehaviour
             }
         
     }
+
+
+    void lanceLeJeu()
+    {
+        tricheOrdi = true;
+        Debug.Log("triche ordi");
+        Quaternion cible = Quaternion.Euler(0f, -90f, 0f);
+        transform.localRotation = Quaternion.Slerp(transform.rotation, cible, 1);
+
+
+
+
+    }
+
 }
