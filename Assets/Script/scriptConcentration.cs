@@ -48,7 +48,6 @@ public class scriptConcentration : MonoBehaviour
 
         if(actuelConcentration - total >= 0)
         {
-            
             actuelConcentration -= total;
             barreConcentration.value = actuelConcentration;
 
@@ -78,7 +77,7 @@ public class scriptConcentration : MonoBehaviour
             joueur.concentration ++;
             barreConcentration.value = actuelConcentration;
             yield return regenTicks;
-            Debug.Log("recharge");
+            //Debug.Log("recharge");
         }
         
         regen = null;

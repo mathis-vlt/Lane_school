@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class deplacement : MonoBehaviour
 {
@@ -7,12 +10,22 @@ public class deplacement : MonoBehaviour
     //[SerializeField] [Range(0.0F, 100.0F)] private float vitesse;
     [SerializeField] private Camera camera;
     [SerializeField] private NavMeshAgent prof;
-    //coucou
+    int lePath;
+    int size;
+
+    public GameObject[] paths;
+
+    private void Start()
+    {
+        size = paths.Length - 1;
+        lePath = Random.Range(0, size);
+        Debug.Log("" + paths.Length);
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        /*if(Input.GetMouseButton(0))
         {
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -20,6 +33,18 @@ public class deplacement : MonoBehaviour
             {
                 prof.SetDestination(hit.point);
             }
+        }*/
+
+        if (prof.transform.position == paths[lePath].transform.position)
+        {
+            lePath = Random.Range(0, size);
+            Debug.Log("" + paths[lePath].transform.position);
         }
+        else
+        {
+            prof.SetDestination(paths[lePath].transform.position);
+        }
+        
+        
     }
 }

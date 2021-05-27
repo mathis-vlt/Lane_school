@@ -20,4 +20,5 @@ public class valNote : MonoBehaviour
         string textNote = "Note : " + joueur.pointsEleve + "/10";
         texte.text = textNote;
     }
+
 }
