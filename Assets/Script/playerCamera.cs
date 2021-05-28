@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class playerCamera : MonoBehaviour
 {
@@ -45,24 +46,32 @@ public class playerCamera : MonoBehaviour
     Vector2 size = new Vector2(10, 10);
 
 
-    /*
-     Barre de stress :
-        Dès que l'on ne regarde pas l'ordinateur de base, la barre de stresse commence a augmenter,
-        elle diminue si on regarde notre pc.
-
-        Plus la barre de stress augmente, plus le champs de vision est réduit.
-
-        Quand la barre de stress est au maximum, la barre tremble.
-      */
+    //jeu ordi-----------------------------------------------------------------------
+    bool tricheOrdi;
+    public GameObject cubeJeu;
+    collisiontest trigger;
+    public GameObject lanSchool;
+    bool avance;
+    //lanschool
+    private float spawnWait;
+    public int startWait = 1;
+    private bool a;
+    bool tricheOrdiReussi;
+    public GameObject check;
 
     void Start()
     {
+       
         Cursor.lockState = CursorLockMode.Locked;
         transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
         barreTriche.SetActive(false);
         erreurOrdiUsed.SetActive(false);
 
         usedPc = false;
+
+        check.SetActive(false);
+        
+        trigger = FindObjectOfType<collisiontest>();
 
     }
 
@@ -71,8 +80,41 @@ public class playerCamera : MonoBehaviour
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-        
 
+        spawnWait = Random.Range(2f, 4f);
+        //Debug.Log(spawnWait);
+
+        //Debug.Log(tricheOrdi);
+
+        if(avance && lanSchool.activeInHierarchy)
+        {
+            Debug.Log("perdu");
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("Solo");
+            tricheOrdiReussi = false;
+        }
+
+        if (trigger.estTriggered)
+        {
+            tricheOrdiReussi = true;
+            check.SetActive(true);
+            Debug.Log("gagné");
+        }
+            
+
+        //Debug.Log(tricheOrdiReussi);
+        if (Input.GetKey(KeyCode.RightArrow) && tricheOrdi)
+        {
+            avance = true;
+            Debug.Log("avance");
+            cubeJeu.transform.position = new Vector3(cubeJeu.transform.position.x, cubeJeu.transform.position.y, cubeJeu.transform.position.z + 5f * Time.deltaTime * speed);
+
+
+        }
+        else
+        {
+            avance = false;
+        }
 
         if (Input.GetKey(KeyCode.C))
         {
@@ -88,8 +130,12 @@ public class playerCamera : MonoBehaviour
             yRotation -= mouseY;
             yRotation = Mathf.Clamp(yRotation, -yRotationMaxEtMin, yRotationMaxEtMin);
 
-            Quaternion cibleBase = Quaternion.Euler(yRotation, -xRotation - 90, 0f);
-            transform.localRotation = Quaternion.Slerp(transform.rotation, cibleBase, Time.deltaTime * smooth);
+            if(!tricheOrdi)
+            {
+                Quaternion cibleBase = Quaternion.Euler(yRotation, -xRotation - 90, 0f);
+                transform.localRotation = Quaternion.Slerp(transform.rotation, cibleBase, Time.deltaTime * smooth);
+            }
+            
             tricheCote();
         }
 
@@ -115,7 +161,6 @@ public class playerCamera : MonoBehaviour
             estVisee = true;
             if(hit.transform.name == "ordiTriche")
             {
-                
                 estVisee = true;                
                 chargementTriche(0);
 
@@ -140,6 +185,19 @@ public class playerCamera : MonoBehaviour
             if (hit.transform.name == "ordiFace")
             {
                 ordiFaceVisee = true;
+
+                if (Input.GetKeyDown(KeyCode.E) && !tricheOrdiReussi)
+                    lanceLeJeu();
+                else
+                    Debug.Log("triche deja reussie");
+
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    Debug.Log("tricheOrdi = false");
+                    tricheOrdi = false;
+                    cubeJeu.transform.position = new Vector3(cubeJeu.transform.position.x, cubeJeu.transform.position.y, 51);
+
+                }
             }
             else
             {
@@ -258,9 +316,9 @@ public class playerCamera : MonoBehaviour
 
     }
 
-        void chargementStress()
-        {
-        for (int i = 0; i <= 100; i++)
+    void chargementStress()
+    {
+    for (int i = 0; i <= 100; i++)
             {
                 valStress = valStress + Time.deltaTime * speed;
 
@@ -274,4 +332,38 @@ public class playerCamera : MonoBehaviour
             }
         
     }
+
+
+
+    void lanceLeJeu()
+    {
+        tricheOrdi = true;
+        
+        Debug.Log("triche ordi");
+
+        Quaternion cible = Quaternion.Euler(0f, -90f, 0f);
+        transform.localRotation = Quaternion.Slerp(transform.rotation, cible, 1);
+
+        StartCoroutine(waitSpawner());
+    }
+
+    private IEnumerator waitSpawner()
+    {
+        lanSchool.SetActive(true);
+        yield return new WaitForSeconds(startWait);
+        
+        while (tricheOrdi)
+        {
+            Debug.Log("salut");
+
+            if(lanSchool.activeInHierarchy)
+                lanSchool.SetActive(false);
+            else
+                lanSchool.SetActive(true);
+
+            yield return new WaitForSeconds(spawnWait);
+        }
+    }
+    
+
 }

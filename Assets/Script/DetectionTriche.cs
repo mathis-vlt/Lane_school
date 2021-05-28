@@ -20,6 +20,7 @@ public class DetectionTriche : MonoBehaviour
     void Start()
     {
         cible = GameObject.FindGameObjectWithTag("Player");
+        StartCoroutine(Routine());
     }
     IEnumerator Routine()
     {
