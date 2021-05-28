@@ -41,14 +41,15 @@ public class deplacement : MonoBehaviour
         {
 
             //Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
-            //animator.SetTrigger("SurPlace");
+            //animator.SetTrigger("Marche");
             //StartCoroutine(Wait());
             lePath = Random.Range(0, size);
             prof.SetDestination(paths[lePath].transform.position);
+            Debug.Log("" + paths[lePath].transform.gameObject.name);
         }
         else
         {
-            //animator.SetTrigger("Marche");
+            //animator.SetTrigger("SurPlace");
             //Debug.Log("" + (paths[lePath].transform.position == prof.transform.position));
             prof.SetDestination(paths[lePath].transform.position);
         }
