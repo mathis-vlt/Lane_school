@@ -10,10 +10,26 @@ public class MenuPause : MonoBehaviour
 {
     public static bool jeuEnPause = false;
     public GameObject menuPauseUI;
+    public Slider sliderVolume;
+    public TextMeshProUGUI textVolume;
 
-        // Update is called once per frame
-        void Update()
+    // Update is called once per frame
+    private void Start()
     {
+        if (!PlayerPrefs.HasKey("SoundOptions"))
+        {
+            PlayerPrefs.SetFloat("SoundOptions", 1f);
+        }
+        sliderVolume.value = PlayerPrefs.GetFloat("SoundOptions");
+        textVolume.text = "Volume : " + (int)(sliderVolume.value * 100) + "%";
+    }
+    void Update()
+    {
+        if (sliderVolume.value != PlayerPrefs.GetFloat("SoundOptions"))
+        {
+            PlayerPrefs.SetFloat("SoundOptions", sliderVolume.value);
+            textVolume.text = "Volume : " + (int)(sliderVolume.value * 100) + "%";
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (jeuEnPause)
