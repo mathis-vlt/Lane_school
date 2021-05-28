@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DetectionTriche : MonoBehaviour
 {
@@ -17,10 +18,14 @@ public class DetectionTriche : MonoBehaviour
     public LayerMask obstacleTarget;
 
     public bool canSeePlayer;
+    public bool trichePlayer;
+
+    public playerCamera player;
     void Start()
     {
         cible = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(Routine());
+        trichePlayer = false;
     }
     IEnumerator Routine()
     {
@@ -28,11 +33,11 @@ public class DetectionTriche : MonoBehaviour
         while (true)
         {
             yield return wait;
-            fieldOfViewCheck();
+            FieldOfViewCheck();
         }
     }
 
-    public void fieldOfViewCheck()
+    public void FieldOfViewCheck()
     {
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, rayon, targetMask);
         if (rangeChecks.Length != 0)
@@ -52,7 +57,7 @@ public class DetectionTriche : MonoBehaviour
             else
                 canSeePlayer = false;
         }
-        else if (!canSeePlayer)
+        else if (canSeePlayer)
             canSeePlayer = false;
     }
 
