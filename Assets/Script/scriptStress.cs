@@ -80,6 +80,7 @@ public class scriptStress : MonoBehaviour
                 if (hit.transform.name == "ordiFace")
                 {
                     joueur.ordiFaceVisee = true;
+                    
                 }
                 else
                 {

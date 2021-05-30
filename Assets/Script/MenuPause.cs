@@ -10,12 +10,17 @@ public class MenuPause : MonoBehaviour
 {
     public static bool jeuEnPause = false;
     public GameObject menuPauseUI;
+    public GameObject mathis;
     public Slider sliderVolume;
     public TextMeshProUGUI textVolume;
+
+    
 
     // Update is called once per frame
     private void Start()
     {
+        mathis.SetActive(true);
+        menuPauseUI.SetActive(false);
         if (!PlayerPrefs.HasKey("SoundOptions"))
         {
             PlayerPrefs.SetFloat("SoundOptions", 1f);
@@ -32,6 +37,8 @@ public class MenuPause : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            menuPauseUI.SetActive(!menuPauseUI.activeSelf);
+            mathis.SetActive(!mathis.activeSelf);
             if (jeuEnPause)
             {
                 Reprendre();
@@ -41,19 +48,25 @@ public class MenuPause : MonoBehaviour
                 Pause();
             }
         }
+        
     }
  
     public void Reprendre()
     {
         menuPauseUI.SetActive(false);
+        mathis.SetActive(true);
         Time.timeScale = 1f;
         jeuEnPause = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     void Pause()
     {
+        mathis.SetActive(false);
         menuPauseUI.SetActive(true);
         Time.timeScale = 0f;
         jeuEnPause = true;
+        Cursor.lockState = CursorLockMode.None;
+        //Camera.current.enabled = true;
     }
     public void ChargerMenu()
     {

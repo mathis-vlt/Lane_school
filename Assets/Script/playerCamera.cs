@@ -47,7 +47,7 @@ public class playerCamera : MonoBehaviour
 
 
     //jeu ordi-----------------------------------------------------------------------
-    bool tricheOrdi;
+    public bool tricheOrdi;
     public GameObject cubeJeu;
     collisiontest trigger;
     public GameObject lanSchool;
@@ -59,9 +59,11 @@ public class playerCamera : MonoBehaviour
     bool tricheOrdiReussi;
     public GameObject check;
 
+    public bool estEnTrainDeTricher;
+
     void Start()
     {
-       
+
         Cursor.lockState = CursorLockMode.Locked;
         transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
         barreTriche.SetActive(false);
@@ -70,9 +72,10 @@ public class playerCamera : MonoBehaviour
         usedPc = false;
 
         check.SetActive(false);
-        
+
         trigger = FindObjectOfType<collisiontest>();
 
+        estEnTrainDeTricher = false;
     }
 
     // Update is called once per frame
@@ -86,7 +89,7 @@ public class playerCamera : MonoBehaviour
 
         //Debug.Log(tricheOrdi);
 
-        if(avance && lanSchool.activeInHierarchy)
+        if (avance && lanSchool.activeInHierarchy)
         {
             Debug.Log("perdu");
             Cursor.lockState = CursorLockMode.None;
@@ -100,7 +103,7 @@ public class playerCamera : MonoBehaviour
             check.SetActive(true);
             Debug.Log("gagné");
         }
-            
+
 
         //Debug.Log(tricheOrdiReussi);
         if (Input.GetKey(KeyCode.RightArrow) && tricheOrdi)
@@ -118,9 +121,11 @@ public class playerCamera : MonoBehaviour
 
         if (Input.GetKey(KeyCode.C))
         {
-            Quaternion cible = Quaternion.Euler(0f, 90f, 0f);   
+            Quaternion cible = Quaternion.Euler(0f, 90f, 0f);
             transform.localRotation = Quaternion.Slerp(transform.rotation, cible, Time.deltaTime * smooth);
             tricheArriere();
+
+            estEnTrainDeTricher = true;
         }
         else
         {
@@ -130,12 +135,12 @@ public class playerCamera : MonoBehaviour
             yRotation -= mouseY;
             yRotation = Mathf.Clamp(yRotation, -yRotationMaxEtMin, yRotationMaxEtMin);
 
-            if(!tricheOrdi)
+            if (!tricheOrdi)
             {
                 Quaternion cibleBase = Quaternion.Euler(yRotation, -xRotation - 90, 0f);
                 transform.localRotation = Quaternion.Slerp(transform.rotation, cibleBase, Time.deltaTime * smooth);
             }
-            
+
             tricheCote();
         }
 
@@ -144,8 +149,12 @@ public class playerCamera : MonoBehaviour
             Chargement = 0;
             barreTriche.Equals(0);
         }
-            
-        
+
+        if(pointsEleve >= 10)
+        {
+            SceneManager.LoadScene("Win");
+        }
+
     }
 
 
@@ -156,16 +165,18 @@ public class playerCamera : MonoBehaviour
         chargementStress();
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 1000))
         {
             estVisee = true;
-            if(hit.transform.name == "ordiTriche")
+            if (hit.transform.name == "ordiTriche")
             {
-                estVisee = true;                
+                Debug.Log("raycast");
+                estVisee = true;
                 chargementTriche(0);
 
             }
-        }else
+        }
+        else
         {
             resetBarreTriche();
             estVisee = false;
@@ -184,6 +195,7 @@ public class playerCamera : MonoBehaviour
             estVisee = true;
             if (hit.transform.name == "ordiFace")
             {
+                estEnTrainDeTricher = false;
                 ordiFaceVisee = true;
 
                 if (Input.GetKeyDown(KeyCode.E) && !tricheOrdiReussi)
@@ -204,10 +216,11 @@ public class playerCamera : MonoBehaviour
                 //Debug.Log("face non visée");
                 ordiFaceVisee = false;
                 chargementStress();
+                estEnTrainDeTricher = true;
             }
 
             if (hit.transform.name == "ordiGauche")
-            {               
+            {
                 estVisee = true;
                 chargementTriche(1);
 
@@ -215,7 +228,7 @@ public class playerCamera : MonoBehaviour
 
             if (hit.transform.name == "ordiDroit")
             {
-                
+
                 estVisee = true;
                 chargementTriche(2);
             }
@@ -251,7 +264,7 @@ public class playerCamera : MonoBehaviour
             {
                 Chargement = Chargement + Time.deltaTime * speed;
                 concentration = concentration - Time.deltaTime * speed;
-                
+
                 if (Chargement > 99)
                     Chargement = 100;
 
@@ -261,9 +274,9 @@ public class playerCamera : MonoBehaviour
                 {
                     resetBarreTriche();
                     finChargement = true;
-                    pointsEleve = pointsEleve + 1;
+                    pointsEleve = pointsEleve + 2;
                     ordisUtilises.Add(indexOrdi);
-                    
+
                 }
             }
         }
@@ -279,8 +292,8 @@ public class playerCamera : MonoBehaviour
     void verificationOrdiDispo(int indexOrdi)
     {
 
-        
-        if (ordisUtilises.Contains(0))
+
+        /*if (ordisUtilises.Contains(0))
         {
             //Debug.Log("ordi arrière deja utilisé");
         }
@@ -291,7 +304,7 @@ public class playerCamera : MonoBehaviour
         if (ordisUtilises.Contains(2))
         {
             //Debug.Log("ordi droit deja utilisé");
-        }
+        }*/
 
         if (ordisUtilises.Contains(indexOrdi))
         {
@@ -305,32 +318,33 @@ public class playerCamera : MonoBehaviour
                 texteErreur = "droit";
 
             erreurOrdiUsed.SetActive(true);
-            
+
         }
         else
         {
             usedPc = false;
+            Debug.Log("caca");
             erreurOrdiUsed.SetActive(false);
         }
-            
+
 
     }
 
     void chargementStress()
     {
-    for (int i = 0; i <= 100; i++)
-            {
-                valStress = valStress + Time.deltaTime * speed;
+        for (int i = 0; i <= 100; i++)
+        {
+            valStress = valStress + Time.deltaTime * speed;
 
-                if (valStress > 99)
-                    valStress = 100;
-            
-            
+            if (valStress > 99)
+                valStress = 100;
+
+
             //calque.rectTransform.sizeDelta = new Vector2(calque.rectTransform.sizeDelta.x - Time.deltaTime * (valStress/100 /3), calque.rectTransform.sizeDelta.y - Time.deltaTime * (valStress /100 / 2));
             scriptStress.instance.UseStress(Time.deltaTime * speed);
             //Debug.Log("val stress = " + valStress);
-            }
-        
+        }
+
     }
 
 
@@ -338,7 +352,7 @@ public class playerCamera : MonoBehaviour
     void lanceLeJeu()
     {
         tricheOrdi = true;
-        
+
         Debug.Log("triche ordi");
 
         Quaternion cible = Quaternion.Euler(0f, -90f, 0f);
@@ -351,12 +365,12 @@ public class playerCamera : MonoBehaviour
     {
         lanSchool.SetActive(true);
         yield return new WaitForSeconds(startWait);
-        
+
         while (tricheOrdi)
         {
             Debug.Log("salut");
 
-            if(lanSchool.activeInHierarchy)
+            if (lanSchool.activeInHierarchy)
                 lanSchool.SetActive(false);
             else
                 lanSchool.SetActive(true);
@@ -364,6 +378,6 @@ public class playerCamera : MonoBehaviour
             yield return new WaitForSeconds(spawnWait);
         }
     }
-    
+
 
 }

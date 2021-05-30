@@ -26,6 +26,7 @@ public class DetectionTriche : MonoBehaviour
         cible = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(Routine());
         trichePlayer = false;
+        player = FindObjectOfType<playerCamera>();
     }
     IEnumerator Routine()
     {
@@ -64,6 +65,11 @@ public class DetectionTriche : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        
+        if(canSeePlayer && (player.estEnTrainDeTricher || player.tricheOrdi))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("Solo");
+
+        }
     }
 }

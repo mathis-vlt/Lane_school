@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Maxime.unity
-    guid: 3f513ab8e9ebc0c47a4abcd4360a4a16
-  - enabled: 1
     path: Assets/Scenes/Thomas.unity
     guid: b2302c37ef3ce3d46abe6665be004019
+  - enabled: 1
+    path: Assets/Scenes/Maxime.unity
+    guid: c6c8f9726ed914645a6558da11f740c2
   - enabled: 1
     path: Assets/Scenes/Solo.unity
     guid: 94ac5597224c9674286cb771c563c60a
   - enabled: 1
-    path: Assets/Scenes/Solo-menuPause.unity
-    guid: 2297c16ce3d8fba4991393ac9ebc5db2
+    path: Assets/Scenes/Win.unity
+    guid: 85dfa45c6a5614244b26a96aca2fd886
   m_configObjects: {}

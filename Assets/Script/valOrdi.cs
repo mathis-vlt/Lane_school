@@ -16,6 +16,7 @@ public class valOrdi : MonoBehaviour
     }
 
     
+
     void Update()
     {
         string textNote = "L'ordinateur " + joueur.texteErreur + " a déjè été utilisé";
